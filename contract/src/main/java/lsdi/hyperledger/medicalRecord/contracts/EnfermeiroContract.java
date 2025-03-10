@@ -18,7 +18,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import com.owlike.genson.Genson;
 
 import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
-import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAssset;
+import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public final class EnfermeiroContract implements ContractInterface {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public void ministraMedicamento(Context ctx, String ministracaoJSON) {
-        MinistracaoMedicamentoAssset ministracao = genson.deserialize(ministracaoJSON, MinistracaoMedicamentoAssset.class);
+        MinistracaoMedicamentoAsset ministracao = genson.deserialize(ministracaoJSON, MinistracaoMedicamentoAsset.class);
         String ministracaoKey = "MINISTRACAO_" + ministracao.idMinistracao;
         ctx.getStub().putStringState(ministracaoKey, genson.serialize(ministracao));
     }
@@ -76,11 +76,11 @@ public final class EnfermeiroContract implements ContractInterface {
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);
 
-        List<MinistracaoMedicamentoAssset> ministracoes = new ArrayList<>();
+        List<MinistracaoMedicamentoAsset> ministracoes = new ArrayList<>();
         Genson genson = new Genson();
 
         for (KeyValue result : resultados) {
-            MinistracaoMedicamentoAssset ministracao = genson.deserialize(result.getStringValue(), MinistracaoMedicamentoAssset.class);
+            MinistracaoMedicamentoAsset ministracao = genson.deserialize(result.getStringValue(), MinistracaoMedicamentoAsset.class);
             ministracoes.add(ministracao);
         }
 
