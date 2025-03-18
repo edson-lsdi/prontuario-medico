@@ -4,6 +4,7 @@
 
 package lsdi.hyperledger.medicalRecord;
 
+import lsdi.hyperledger.medicalRecord.contracts.Utils;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -11,6 +12,7 @@ import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Info;
 import org.hyperledger.fabric.contract.annotation.License;
 import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.shim.ChaincodeException;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
@@ -20,6 +22,8 @@ import com.owlike.genson.Genson;
 import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 import lsdi.hyperledger.medicalRecord.assets.PrescricaoAsset;
+
+import lsdi.hyperledger.medicalRecord.exceptions.AssetException.AssetTransferErrors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,15 +44,15 @@ public final class MedicoContract implements ContractInterface {
 
     private final Genson genson = new Genson();
 
-    private enum AssetTransferErrors {
-        ASSET_NOT_FOUND,
-        ASSET_ALREADY_EXISTS
-    }
-
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public void adicionaEvolucao(Context ctx, String evolucaoJSON) {
         EvolucaoAsset evolucao = genson.deserialize(evolucaoJSON, EvolucaoAsset.class);
         String evolucaoKey = "EVOLUCAO_" + evolucao.idEvolucao;
+
+        if (Utils.AssetExists(ctx, evolucaoKey)) {
+            String errorMessage = String.format("Evolucao %s already exists", evolucaoKey);
+            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_ALREADY_EXISTS.toString());
+        }
         ctx.getStub().putStringState(evolucaoKey, genson.serialize(evolucao));
     }
 
@@ -56,14 +60,12 @@ public final class MedicoContract implements ContractInterface {
     public void adicionaPrescricao(Context ctx, String prescricaoJSON) {
         PrescricaoAsset prescricao = genson.deserialize(prescricaoJSON, PrescricaoAsset.class);
         String prescricaoKey = "PRESCRICAO_" + prescricao.idPrescricao;
-        ctx.getStub().putStringState(prescricaoKey, genson.serialize(prescricao));
-    }
 
-    @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void ministraMedicamento(Context ctx, String ministracaoJSON) {
-        MinistracaoMedicamentoAsset ministracao = genson.deserialize(ministracaoJSON, MinistracaoMedicamentoAsset.class);
-        String ministracaoKey = "MINISTRACAO_" + ministracao.idMinistracao;
-        ctx.getStub().putStringState(ministracaoKey, genson.serialize(ministracao));
+        if (Utils.AssetExists(ctx, prescricaoKey)) {
+            String errorMessage = String.format("Evolucao %s already exists", prescricaoKey);
+            throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_ALREADY_EXISTS.toString());
+        }
+        ctx.getStub().putStringState(prescricaoKey, genson.serialize(prescricao));
     }
 
     @Transaction(intent = Transaction.TYPE.EVALUATE)
