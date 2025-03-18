@@ -21,8 +21,13 @@ import com.owlike.genson.Genson;
 import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 
+import lsdi.hyperledger.medicalRecord.exceptions.AssetException.*;
+import lsdi.hyperledger.medicalRecord.exceptions.CertificateException.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Contract(
         name = "paciente",
@@ -40,22 +45,36 @@ public final class PacienteContract implements ContractInterface {
 
     private final Genson genson = new Genson();
 
-    private enum AssetTransferErrors {
-        ASSET_NOT_FOUND,
-        ASSET_ALREADY_EXISTS,
-        ACCESS_DENIED
+    private String getClientId (Context ctx) {
+        String clientCertificate = ctx.getClientIdentity().getId();
+
+        Pattern pattern = Pattern.compile("CN=([^,\\s]+)");
+        Matcher matcher = pattern.matcher(clientCertificate);
+
+        if (matcher.find()) {
+            return matcher.group(1); // Retorna o CN id do certificado
+        }
+
+        String errorMessage = String.format("Id not found");
+        throw new ChaincodeException(errorMessage, CertificateErrors.ID_NOT_FOUND.toString());
+    }
+
+    private boolean hasClientAcess(Context ctx, String idPaciente) {
+        var clientId = getClientId(ctx);
+
+        if (clientId.equals(idPaciente)) {
+            return true;
+        }
+
+        String errorMessage = String.format("Client don't have acess");
+        throw new ChaincodeException(errorMessage, AssetTransferErrors.ACCESS_DENIED.toString());
     }
 
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String listaEvolucaoPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-        String clientId = ctx.getClientIdentity().getId();
-
-        if (clientId != idPaciente) {
-            String errorMessage = String.format("Client don't have acess");
-            throw new ChaincodeException(errorMessage, AssetTransferErrors.ACCESS_DENIED.toString());
-        }
+        hasClientAcess(ctx, idPaciente);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);
@@ -69,19 +88,13 @@ public final class PacienteContract implements ContractInterface {
         }
 
         return genson.serialize(queryResults);
-
     }
 
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String listaMinistracaoMedicamentosPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-        String clientId = ctx.getClientIdentity().getId();
-
-        if (clientId != idPaciente) {
-            String errorMessage = String.format("Client don't have acess");
-            throw new ChaincodeException(errorMessage, AssetTransferErrors.ACCESS_DENIED.toString());
-        }
+        hasClientAcess(ctx, idPaciente);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);
