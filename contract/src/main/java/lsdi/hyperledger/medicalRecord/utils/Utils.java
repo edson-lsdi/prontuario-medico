@@ -1,4 +1,4 @@
-package lsdi.hyperledger.medicalRecord.contracts;
+package lsdi.hyperledger.medicalRecord.utils;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Transaction;

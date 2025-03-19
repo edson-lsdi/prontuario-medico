@@ -2,9 +2,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package lsdi.hyperledger.medicalRecord;
+package lsdi.hyperledger.medicalRecord.contracts;
 
-import lsdi.hyperledger.medicalRecord.contracts.Utils;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -20,6 +19,7 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import com.owlike.genson.Genson;
 
 import lsdi.hyperledger.medicalRecord.exceptions.AssetException.AssetTransferErrors;
+import lsdi.hyperledger.medicalRecord.utils.Utils;
 
 import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
