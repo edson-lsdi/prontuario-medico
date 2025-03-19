@@ -25,7 +25,7 @@ public final class MedicoService {
     }
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void adicionaEvolucao(Context ctx, String evolucaoJSON) {
+    public String adicionaEvolucao(Context ctx, String evolucaoJSON) {
         EvolucaoAsset evolucao = genson.deserialize(evolucaoJSON, EvolucaoAsset.class);
         String evolucaoKey = "EVOLUCAO_" + evolucao.idEvolucao;
 
@@ -34,17 +34,21 @@ public final class MedicoService {
             throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_ALREADY_EXISTS.toString());
         }
         ctx.getStub().putStringState(evolucaoKey, genson.serialize(evolucao));
+
+        return genson.serialize(evolucaoKey);
     }
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void adicionaPrescricao(Context ctx, String prescricaoJSON) {
+    public String adicionaPrescricao(Context ctx, String prescricaoJSON) {
         PrescricaoAsset prescricao = genson.deserialize(prescricaoJSON, PrescricaoAsset.class);
         String prescricaoKey = "PRESCRICAO_" + prescricao.idPrescricao;
 
         if (Utils.AssetExists(ctx, prescricaoKey)) {
-            String errorMessage = String.format("Evolucao %s already exists", prescricaoKey);
+            String errorMessage = String.format("Prescricao  %s already exists", prescricaoKey);
             throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_ALREADY_EXISTS.toString());
         }
         ctx.getStub().putStringState(prescricaoKey, genson.serialize(prescricao));
+
+        return genson.serialize(prescricaoKey);
     }
 }

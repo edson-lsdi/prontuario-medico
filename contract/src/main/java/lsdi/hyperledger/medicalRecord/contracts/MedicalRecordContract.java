@@ -26,19 +26,19 @@ public class MedicalRecordContract implements ContractInterface {
 
     // Métodos de acesso do médico
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void adicionaEvolucao(Context ctx, String evolucaoJSON) {
-        medicoService.adicionaEvolucao(ctx, evolucaoJSON);
+    public String adicionaEvolucao(Context ctx, String evolucaoJSON) {
+        return medicoService.adicionaEvolucao(ctx, evolucaoJSON);
     }
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void adicionaPrescricao(Context ctx, String prescricaoJSON) {
-        medicoService.adicionaPrescricao(ctx, prescricaoJSON);
+    public String adicionaPrescricao(Context ctx, String prescricaoJSON) {
+        return medicoService.adicionaPrescricao(ctx, prescricaoJSON);
     }
 
     // Métodos de acesso do enfermeiro
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void ministraMedicamento(Context ctx, String ministracaoJSON) {
-        enfermeiroService.ministraMedicamento(ctx, ministracaoJSON);
+    public String ministraMedicamento(Context ctx, String ministracaoJSON) {
+        return enfermeiroService.ministraMedicamento(ctx, ministracaoJSON);
     }
 
     // Todos os papeis

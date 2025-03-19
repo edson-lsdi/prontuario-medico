@@ -23,14 +23,16 @@ public final class EnfermeiroService {
     }
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
-    public void ministraMedicamento(Context ctx, String ministracaoJSON) {
+    public String ministraMedicamento(Context ctx, String ministracaoJSON) {
         MinistracaoMedicamentoAsset ministracao = genson.deserialize(ministracaoJSON, MinistracaoMedicamentoAsset.class);
         String ministracaoKey = "MINISTRACAO_" + ministracao.idMinistracao;
 
         if (Utils.AssetExists(ctx, ministracaoKey)) {
-            String errorMessage = String.format("Evolucao %s already exists", ministracaoKey);
+            String errorMessage = String.format("Ministracao %s already exists", ministracaoKey);
             throw new ChaincodeException(errorMessage, AssetTransferErrors.ASSET_ALREADY_EXISTS.toString());
         }
         ctx.getStub().putStringState(ministracaoKey, genson.serialize(ministracao));
+
+        return genson.serialize(ministracaoKey);
     }
 }
