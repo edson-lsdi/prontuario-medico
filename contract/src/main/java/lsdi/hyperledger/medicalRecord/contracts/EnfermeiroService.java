@@ -15,11 +15,10 @@ import lsdi.hyperledger.medicalRecord.exceptions.AssetException.AssetTransferErr
 
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 
-public final class EnfermeiroService {
-    private final Genson genson;
+public final class EnfermeiroService extends ContractServiceAbstract {
 
     public EnfermeiroService(Genson genson) {
-        this.genson = genson;
+        super(genson);
     }
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)

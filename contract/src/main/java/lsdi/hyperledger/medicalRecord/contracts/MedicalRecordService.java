@@ -16,11 +16,10 @@ import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 import lsdi.hyperledger.medicalRecord.assets.PrescricaoAsset;
 
-public class MedicalRecordService {
-    private final Genson genson;
+public class MedicalRecordService extends ContractServiceAbstract {
 
     public MedicalRecordService(Genson genson) {
-        this.genson = genson;
+        super(genson);
     }
 
     @Transaction(intent = Transaction.TYPE.EVALUATE)
