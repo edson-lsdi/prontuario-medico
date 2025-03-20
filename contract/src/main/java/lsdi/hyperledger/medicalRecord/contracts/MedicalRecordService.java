@@ -34,8 +34,10 @@ public class MedicalRecordService extends ContractServiceAbstract {
         List<EvolucaoAsset> queryResults = new ArrayList<>();
 
         for (KeyValue result : resultados) {
-            EvolucaoAsset evolucao = genson.deserialize(result.getStringValue(), EvolucaoAsset.class);
-            queryResults.add(evolucao);
+            if (result.getKey().startsWith("EVOLUCAO_")) {
+                EvolucaoAsset evolucao = genson.deserialize(result.getStringValue(), EvolucaoAsset.class);
+                queryResults.add(evolucao);
+            }
         }
 
         return genson.serialize(queryResults);
@@ -53,8 +55,10 @@ public class MedicalRecordService extends ContractServiceAbstract {
         List<MinistracaoMedicamentoAsset> ministracoes = new ArrayList<>();
 
         for (KeyValue result : resultados) {
-            MinistracaoMedicamentoAsset ministracao = genson.deserialize(result.getStringValue(), MinistracaoMedicamentoAsset.class);
-            ministracoes.add(ministracao);
+            if (result.getKey().startsWith("MINISTRACAO_")) {
+                MinistracaoMedicamentoAsset ministracao = genson.deserialize(result.getStringValue(), MinistracaoMedicamentoAsset.class);
+                ministracoes.add(ministracao);
+            }
         }
 
         return genson.serialize(ministracoes);
@@ -72,8 +76,10 @@ public class MedicalRecordService extends ContractServiceAbstract {
         List<PrescricaoAsset> queryResults = new ArrayList<>();
 
         for (KeyValue result : resultados) {
-            PrescricaoAsset prescricao = genson.deserialize(result.getStringValue(), PrescricaoAsset.class);
-            queryResults.add(prescricao);
+            if (result.getKey().startsWith("PRESCRICAO_")) {
+                PrescricaoAsset prescricao = genson.deserialize(result.getStringValue(), PrescricaoAsset.class);
+                queryResults.add(prescricao);
+            }
         }
 
         return genson.serialize(queryResults);
