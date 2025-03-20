@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package lsdi.hyperledger.medicalRecord.contracts;
+package lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices;
 
 import com.owlike.genson.Genson;
 
@@ -16,6 +16,7 @@ import lsdi.hyperledger.medicalRecord.exceptions.AssetException.AssetTransferErr
 import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.PrescricaoAsset;
 
+import lsdi.hyperledger.medicalRecord.contracts.ContractServiceAbstract;
 
 public final class MedicoService extends ContractServiceAbstract {
 

@@ -1,4 +1,4 @@
-package lsdi.hyperledger.medicalRecord.contracts;
+package lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,8 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 import lsdi.hyperledger.medicalRecord.assets.PrescricaoAsset;
+
+import lsdi.hyperledger.medicalRecord.contracts.ContractServiceAbstract;
 
 public class MedicalRecordService extends ContractServiceAbstract {
     private final String[] roleCanAccessOnlySameId = {"paciente"};

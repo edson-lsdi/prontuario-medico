@@ -6,6 +6,10 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.*;
 
+import lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices.EnfermeiroService;
+import lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices.MedicalRecordService;
+import lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices.MedicoService;
+
 @Contract(
         name = "medical_record",
         info = @Info(

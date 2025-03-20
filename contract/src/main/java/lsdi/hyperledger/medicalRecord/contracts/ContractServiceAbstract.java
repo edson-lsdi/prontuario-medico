@@ -13,7 +13,7 @@ import static lsdi.hyperledger.medicalRecord.utils.Utils.hasClientSameId;
 public abstract class ContractServiceAbstract {
     protected final Genson genson;
     
-    ContractServiceAbstract(Genson genson) {
+    protected ContractServiceAbstract(Genson genson) {
         this.genson = genson;
     }
 
