@@ -17,6 +17,7 @@ import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 import lsdi.hyperledger.medicalRecord.assets.PrescricaoAsset;
 
 public class MedicalRecordService extends ContractServiceAbstract {
+    private final String[] roleCanAccessOnlySameId = {"paciente"};
 
     public MedicalRecordService(Genson genson) {
         super(genson);
@@ -26,7 +27,7 @@ public class MedicalRecordService extends ContractServiceAbstract {
     public String listaEvolucaoPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-//TODO       hasClientAcess(ctx, idPaciente);
+        hasRoleAccessById(ctx, idPaciente, roleCanAccessOnlySameId);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);
@@ -47,7 +48,7 @@ public class MedicalRecordService extends ContractServiceAbstract {
     public String listaMinistracaoMedicamentosPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-//TODO       hasClientAcess(ctx, idPaciente);
+        hasRoleAccessById(ctx, idPaciente, roleCanAccessOnlySameId);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);
@@ -68,7 +69,7 @@ public class MedicalRecordService extends ContractServiceAbstract {
     public String listaPrescricaoPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-//TODO       hasClientAcess(ctx, idPaciente);
+        hasRoleAccessById(ctx, idPaciente, roleCanAccessOnlySameId);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);

@@ -31,10 +31,10 @@ public class Utils {
         throw new ChaincodeException(errorMessage, CertificateException.CertificateErrors.ID_NOT_FOUND.toString());
     }
 
-    public static boolean hasClientAcess(Context ctx, String idPaciente) {
+    public static boolean hasClientSameId(Context ctx, String id) {
         var clientId = getClientId(ctx);
 
-        if (clientId.equals(idPaciente)) {
+        if (clientId.equals(id)) {
             return true;
         }
 

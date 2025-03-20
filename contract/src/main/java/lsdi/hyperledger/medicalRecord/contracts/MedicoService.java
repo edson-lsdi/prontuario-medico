@@ -25,6 +25,8 @@ public final class MedicoService extends ContractServiceAbstract {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public String adicionaEvolucao(Context ctx, String evolucaoJSON) {
+        hasRoleAccess(ctx, "medico");
+
         EvolucaoAsset evolucao = genson.deserialize(evolucaoJSON, EvolucaoAsset.class);
         String evolucaoKey = "EVOLUCAO_" + evolucao.idEvolucao;
 
@@ -39,6 +41,8 @@ public final class MedicoService extends ContractServiceAbstract {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public String adicionaPrescricao(Context ctx, String prescricaoJSON) {
+        hasRoleAccess(ctx, "medico");
+
         PrescricaoAsset prescricao = genson.deserialize(prescricaoJSON, PrescricaoAsset.class);
         String prescricaoKey = "PRESCRICAO_" + prescricao.idPrescricao;
 

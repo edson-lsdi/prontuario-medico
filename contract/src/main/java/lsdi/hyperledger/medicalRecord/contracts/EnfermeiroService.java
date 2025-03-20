@@ -23,6 +23,8 @@ public final class EnfermeiroService extends ContractServiceAbstract {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public String ministraMedicamento(Context ctx, String ministracaoJSON) {
+        hasRoleAccess(ctx, "enfermeiro");
+
         MinistracaoMedicamentoAsset ministracao = genson.deserialize(ministracaoJSON, MinistracaoMedicamentoAsset.class);
         String ministracaoKey = "MINISTRACAO_" + ministracao.idMinistracao;
 
