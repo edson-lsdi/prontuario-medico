@@ -27,8 +27,7 @@ public class Utils {
             return matcher.group(1); // Retorna o CN id do certificado
         }
 
-        String errorMessage = String.format("Id not found");
-        throw new ChaincodeException(errorMessage, CertificateException.CertificateErrors.ID_NOT_FOUND.toString());
+        throw new ChaincodeException(CertificateException.CertificateErrors.ID_NOT_FOUND.name());
     }
 
     public static boolean hasClientSameId(Context ctx, String id) {
@@ -38,7 +37,6 @@ public class Utils {
             return true;
         }
 
-        String errorMessage = String.format("Client don't have acess");
-        throw new ChaincodeException(errorMessage, AssetException.AssetTransferErrors.ACCESS_DENIED.toString());
+        throw new ChaincodeException(AssetException.AssetTransferErrors.ACCESS_DENIED.name());
     }
 }

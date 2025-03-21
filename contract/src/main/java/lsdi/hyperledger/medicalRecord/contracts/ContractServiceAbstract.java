@@ -31,18 +31,25 @@ public abstract class ContractServiceAbstract {
             return true;
         }
 
-        String errorMessage = String.format("Client don't have acess");
-        throw new ChaincodeException(errorMessage, AssetException.AssetTransferErrors.ACCESS_DENIED.toString());
+        throw new ChaincodeException(AssetException.AssetTransferErrors.ACCESS_DENIED.name());
     }
 
-    public boolean hasRoleAccessById(Context ctx, String id, String[] rolesRestrictedAccessWithSameId) {
+    public boolean hasRoleAccessById(Context ctx, String id, String [] rolesFullAccess, String[] rolesRestrictedAccessById) {
+        String[] roles = getRoles(ctx);
 
-        for (int i = 0; i < rolesRestrictedAccessWithSameId.length; i++) {
-            // Verify if identity contains role with need contain that same id to access
-            if (hasRole(ctx, rolesRestrictedAccessWithSameId[i])) {
+        // Verify if identity have role with full access a method
+        for (String role : roles) {
+            if (Arrays.asList(rolesFullAccess).contains(role)) {
+                return true;
+            }
+        }
+
+        // Verify if identity have role restricted access only that same id method
+        for (String role : roles) {
+            if (Arrays.asList(rolesRestrictedAccessById).contains(role)) {
                 return hasClientSameId(ctx, id);
             }
         }
-        return true;
+        throw new ChaincodeException(AssetException.AssetTransferErrors.ACCESS_DENIED.name());
     }
 }
