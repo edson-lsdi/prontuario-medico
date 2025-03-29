@@ -1,4 +1,4 @@
-package lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices;
+package lsdi.hyperledger.medicalRecord.contract.prontuarioMedicoServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,13 @@ import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 import lsdi.hyperledger.medicalRecord.assets.PrescricaoAsset;
 
-import lsdi.hyperledger.medicalRecord.contracts.ContractServiceAbstract;
+import lsdi.hyperledger.medicalRecord.contract.MonitorControleAcessoAbstract;
 
-public class MedicalRecordService extends ContractServiceAbstract {
-    private final String[] rolesFullAccess = {"medico", "enfermeiro"};
-    private final String[] rolesRestrictedAccessById = {"paciente"};
+public class PacienteService extends MonitorControleAcessoAbstract {
+    private final String[] papeisComTotalAcesso = {"medico", "enfermeiro"};
+    private final String[] papeisAcessoRestricaoPorIdUsuario = {"paciente"};
 
-    public MedicalRecordService(Genson genson) {
+    public PacienteService(Genson genson) {
         super(genson);
     }
 
@@ -30,7 +30,7 @@ public class MedicalRecordService extends ContractServiceAbstract {
     public String listaEvolucaoPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-        hasRoleAccessById(ctx, idPaciente, rolesFullAccess, rolesRestrictedAccessById);
+        temAcessoComRestricaoPorIdUsuario(ctx, idPaciente, papeisComTotalAcesso, papeisAcessoRestricaoPorIdUsuario);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);
@@ -51,7 +51,7 @@ public class MedicalRecordService extends ContractServiceAbstract {
     public String listaMinistracaoMedicamentosPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-        hasRoleAccessById(ctx, idPaciente, rolesFullAccess, rolesRestrictedAccessById);
+        temAcessoComRestricaoPorIdUsuario(ctx, idPaciente, papeisComTotalAcesso, papeisAcessoRestricaoPorIdUsuario);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);
@@ -72,7 +72,7 @@ public class MedicalRecordService extends ContractServiceAbstract {
     public String listaPrescricaoPaciente(Context ctx, String idPaciente) {
         ChaincodeStub stub = ctx.getStub();
 
-        hasRoleAccessById(ctx, idPaciente, rolesFullAccess, rolesRestrictedAccessById);
+        temAcessoComRestricaoPorIdUsuario(ctx, idPaciente, papeisComTotalAcesso, papeisAcessoRestricaoPorIdUsuario);
 
         String queryString = String.format("{\"selector\":{\"idPaciente\":\"%s\"}}", idPaciente);
         QueryResultsIterator<KeyValue> resultados = stub.getQueryResult(queryString);

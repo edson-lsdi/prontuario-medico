@@ -1,4 +1,4 @@
-package lsdi.hyperledger.medicalRecord.contracts;
+package lsdi.hyperledger.medicalRecord.contract;
 
 import com.owlike.genson.Genson;
 
@@ -6,9 +6,9 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.*;
 
-import lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices.EnfermeiroService;
-import lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices.MedicalRecordService;
-import lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices.MedicoService;
+import lsdi.hyperledger.medicalRecord.contract.prontuarioMedicoServices.EnfermeiroService;
+import lsdi.hyperledger.medicalRecord.contract.prontuarioMedicoServices.PacienteService;
+import lsdi.hyperledger.medicalRecord.contract.prontuarioMedicoServices.MedicoService;
 
 @Contract(
         name = "medical_record",
@@ -21,12 +21,12 @@ import lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices.MedicoServ
                         url = "http://www.apache.org/licenses/LICENSE-2.0.html")
         ))
 @Default
-public class MedicalRecordContract implements ContractInterface {
+public class ProntuarioMedicoContract implements ContractInterface {
     private final Genson genson = new Genson();
 
     private final MedicoService medicoService = new MedicoService(genson);
     private final EnfermeiroService enfermeiroService = new EnfermeiroService(genson);
-    private final MedicalRecordService medicalRecordService = new MedicalRecordService(genson);
+    private final PacienteService pacienteService = new PacienteService(genson);
 
     // Métodos de acesso do médico
     @Transaction(intent = Transaction.TYPE.SUBMIT)
@@ -48,16 +48,16 @@ public class MedicalRecordContract implements ContractInterface {
     // Todos os papeis
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String listaEvolucaoPaciente(Context ctx, String idPaciente) {
-        return medicalRecordService.listaEvolucaoPaciente(ctx, idPaciente);
+        return pacienteService.listaEvolucaoPaciente(ctx, idPaciente);
     }
 
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String listaMinistracaoMedicamentosPaciente(Context ctx, String idPaciente) {
-        return medicalRecordService.listaMinistracaoMedicamentosPaciente(ctx, idPaciente);
+        return pacienteService.listaMinistracaoMedicamentosPaciente(ctx, idPaciente);
     }
 
     @Transaction(intent = Transaction.TYPE.EVALUATE)
     public String listaPrescricaoPaciente(Context ctx, String idPaciente) {
-        return medicalRecordService.listaPrescricaoPaciente(ctx, idPaciente);
+        return pacienteService.listaPrescricaoPaciente(ctx, idPaciente);
     }
 }

@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices;
+package lsdi.hyperledger.medicalRecord.contract.prontuarioMedicoServices;
 
 import com.owlike.genson.Genson;
 
@@ -13,11 +13,11 @@ import org.hyperledger.fabric.shim.ChaincodeException;
 import lsdi.hyperledger.medicalRecord.utils.Utils;
 import lsdi.hyperledger.medicalRecord.exceptions.AssetException.AssetTransferErrors;
 
-import lsdi.hyperledger.medicalRecord.contracts.ContractServiceAbstract;
+import lsdi.hyperledger.medicalRecord.contract.MonitorControleAcessoAbstract;
 
 import lsdi.hyperledger.medicalRecord.assets.MinistracaoMedicamentoAsset;
 
-public final class EnfermeiroService extends ContractServiceAbstract {
+public final class EnfermeiroService extends MonitorControleAcessoAbstract {
 
     public EnfermeiroService(Genson genson) {
         super(genson);
@@ -25,7 +25,7 @@ public final class EnfermeiroService extends ContractServiceAbstract {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public String ministraMedicamento(Context ctx, String ministracaoJSON) {
-        hasRoleAccess(ctx, "enfermeiro");
+        usuarioTemPapel(ctx, "enfermeiro");
 
         MinistracaoMedicamentoAsset ministracao = genson.deserialize(ministracaoJSON, MinistracaoMedicamentoAsset.class);
         String ministracaoKey = "MINISTRACAO_" + ministracao.idMinistracao;

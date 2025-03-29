@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package lsdi.hyperledger.medicalRecord.contracts.medicalRecordServices;
+package lsdi.hyperledger.medicalRecord.contract.prontuarioMedicoServices;
 
 import com.owlike.genson.Genson;
 
@@ -16,9 +16,9 @@ import lsdi.hyperledger.medicalRecord.exceptions.AssetException.AssetTransferErr
 import lsdi.hyperledger.medicalRecord.assets.EvolucaoAsset;
 import lsdi.hyperledger.medicalRecord.assets.PrescricaoAsset;
 
-import lsdi.hyperledger.medicalRecord.contracts.ContractServiceAbstract;
+import lsdi.hyperledger.medicalRecord.contract.MonitorControleAcessoAbstract;
 
-public final class MedicoService extends ContractServiceAbstract {
+public final class MedicoService extends MonitorControleAcessoAbstract {
 
     public MedicoService(Genson genson) {
         super(genson);
@@ -26,7 +26,7 @@ public final class MedicoService extends ContractServiceAbstract {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public String adicionaEvolucao(Context ctx, String evolucaoJSON) {
-        hasRoleAccess(ctx, "medico");
+        usuarioTemPapel(ctx, "medico");
 
         EvolucaoAsset evolucao = genson.deserialize(evolucaoJSON, EvolucaoAsset.class);
         String evolucaoKey = "EVOLUCAO_" + evolucao.idEvolucao;
@@ -42,7 +42,7 @@ public final class MedicoService extends ContractServiceAbstract {
 
     @Transaction(intent = Transaction.TYPE.SUBMIT)
     public String adicionaPrescricao(Context ctx, String prescricaoJSON) {
-        hasRoleAccess(ctx, "medico");
+        usuarioTemPapel(ctx, "medico");
 
         PrescricaoAsset prescricao = genson.deserialize(prescricaoJSON, PrescricaoAsset.class);
         String prescricaoKey = "PRESCRICAO_" + prescricao.idPrescricao;
